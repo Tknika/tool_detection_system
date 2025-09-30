@@ -14,6 +14,16 @@ fi
 echo "Activating virtual environment..."
 source .venv/bin/activate
 
+# Check GPU availability
+echo "Checking GPU availability..."
+python -c "import torch; print('CUDA available:', torch.cuda.is_available()); print('GPU count:', torch.cuda.device_count()); print('GPU name:', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'No GPU')"
+if ! python -c "import torch; assert torch.cuda.is_available(), 'CUDA not available'" 2>/dev/null; then
+    echo "ERROR: CUDA GPU not available. Training requires GPU."
+    echo "Please ensure you have a CUDA-compatible GPU and proper drivers installed."
+    exit 1
+fi
+echo "GPU check passed!"
+
 # Check if .env file exists
 if [ ! -f ".env" ]; then
     echo "Creating .env file..."
