@@ -30,7 +30,12 @@ fi
 
 # Run the pipeline
 echo "Starting YOLO pipeline training..."
-python complete_yolo_pipeline.py --n-trials 20
+python complete_yolo_pipeline.py --n-trials 20 &
 
-echo "Training completed! Check results in yolo/runs/optuna/"
-echo "To view TensorBoard: tensorboard --logdir yolo/runs/optuna/"
+# Start TensorBoard in background
+echo "Starting TensorBoard..."
+tensorboard --logdir yolo/runs/optuna/ --host 0.0.0.0 --port 6006 &
+
+echo "Training and TensorBoard started!"
+echo "TensorBoard available at: http://localhost:6006"
+echo "Training in background, check yolo/runs/optuna/ for results"
