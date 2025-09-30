@@ -32,35 +32,11 @@ mkdir -p logs models
 
 # Create virtual environment with uv
 echo "Creating virtual environment with uv..."
-if [ -d ".venv" ]; then
-    echo "Virtual environment already exists, checking if packages are installed..."
-    source .venv/bin/activate
-    # Check if main packages are installed
-    python -c "import ultralytics, optuna, fiftyone" 2>/dev/null
-    if [ $? -eq 0 ]; then
-        echo "Packages already installed, skipping virtual environment creation"
-    else
-        echo "Packages not found, reinstalling..."
-        uv pip install -r requirements.txt
-    fi
-else
-    echo "Creating new virtual environment with uv..."
-    uv venv --python 3.10
-    source .venv/bin/activate
-fi
+uv venv --python 3.11
+source .venv/bin/activate
 
-# Install PyTorch with CUDA support (if CUDA is available)
-echo "Installing PyTorch..."
-if command -v nvidia-smi &> /dev/null; then
-    echo "CUDA detected, installing PyTorch with CUDA support..."
-    uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-else
-    echo "No CUDA detected, installing CPU-only PyTorch..."
-    uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-fi
-
-# Install other requirements
-echo "Installing other requirements..."
+# Install requirements
+echo "Installing requirements..."
 uv pip install -r requirements.txt
 
 # Create .env file from template
