@@ -286,12 +286,7 @@ class YOLOPipeline:
             return study
             
         except KeyboardInterrupt:
-            logger.info("\n\nOptimization interrupted by user (Ctrl+C)")
-            if hasattr(self, 'study') and self.study:
-                logger.info(f"Completed trials: {len(self.study.trials)}")
-                if self.study.best_trial:
-                    logger.info(f"Best parameters so far: {self.study.best_params}")
-                    logger.info(f"Best mAP50-95 so far: {self.study.best_value:.4f}")
+            print("\n\nOptimization interrupted by user (Ctrl+C)")
             return None
             
         except Exception as e:
