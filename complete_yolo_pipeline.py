@@ -25,6 +25,17 @@ import shutil
 # Load environment variables first
 load_dotenv(override=True)
 
+# Print environment variables at startup
+print("\n=== ENVIRONMENT VARIABLES ===")
+print(f"IMAGE_SIZE: {os.getenv('IMAGE_SIZE', 'NOT_SET')}")
+print(f"BATCH_SIZE: {os.getenv('BATCH_SIZE', 'NOT_SET')}")
+print(f"WORKERS: {os.getenv('WORKERS', 'NOT_SET')}")
+print(f"NUM_TRAIN: {os.getenv('NUM_TRAIN', 'NOT_SET')}")
+print(f"NUM_VAL: {os.getenv('NUM_VAL', 'NOT_SET')}")
+print(f"NUM_TEST: {os.getenv('NUM_TEST', 'NOT_SET')}")
+print(f"CLASSES: {os.getenv('CLASSES', 'NOT_SET')}")
+print("=" * 30)
+
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -236,9 +247,19 @@ class YOLOPipeline:
         print(f"Epochs: {epochs}")
         print(f"Learning Rate (lr0): {lr0:.6f}")
         print(f"Learning Rate Final (lrf): {lrf:.6f}")
-        print(f"Image Size: {int(os.getenv('IMAGE_SIZE', '640'))}")
-        print(f"Batch Size: {int(os.getenv('BATCH_SIZE', '32'))}")
-        print(f"Workers: {int(os.getenv('WORKERS', '8'))}")
+        
+        # Debug environment variables
+        image_size = os.getenv('IMAGE_SIZE', '640')
+        batch_size = os.getenv('BATCH_SIZE', '32')
+        workers = os.getenv('WORKERS', '8')
+        
+        print(f"DEBUG - IMAGE_SIZE from env: '{image_size}'")
+        print(f"DEBUG - BATCH_SIZE from env: '{batch_size}'")
+        print(f"DEBUG - WORKERS from env: '{workers}'")
+        
+        print(f"Image Size: {int(image_size)}")
+        print(f"Batch Size: {int(batch_size)}")
+        print(f"Workers: {int(workers)}")
         print(f"Classes: {self.classes}")
         print(f"Data: {os.path.join(self.yolo_train_folder, 'dataset.yaml')}")
         print("=" * 30)
