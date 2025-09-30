@@ -28,7 +28,12 @@ print(f".env file exists: {os.path.exists('.env')}")
 if os.path.exists('.env'):
     print("Contents of .env:")
     with open('.env', 'r') as f:
-        print(f.read())
+        content = f.read()
+        print(content)
+        if 'MODEL_NAME' in content:
+            print("MODEL_NAME found in .env")
+        else:
+            print("MODEL_NAME NOT found in .env")
 
 load_dotenv(override=True)
 
