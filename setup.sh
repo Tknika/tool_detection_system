@@ -32,7 +32,7 @@ mkdir -p logs models
 
 # Create virtual environment with uv
 echo "Creating virtual environment with uv..."
-uv venv --python 3.10
+uv venv --python 3.11
 source .venv/bin/activate
 
 # Install PyTorch with CUDA support first
