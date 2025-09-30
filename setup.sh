@@ -32,11 +32,15 @@ mkdir -p logs models
 
 # Create virtual environment with uv
 echo "Creating virtual environment with uv..."
-uv venv --python 3.11
+uv venv --python 3.10
 source .venv/bin/activate
 
-# Install requirements
-echo "Installing requirements..."
+# Install PyTorch with CUDA support first
+echo "Installing PyTorch with CUDA support..."
+uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+
+# Install other requirements
+echo "Installing other requirements..."
 uv pip install -r requirements.txt
 
 # Create .env file from template
