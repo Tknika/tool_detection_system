@@ -231,6 +231,18 @@ class YOLOPipeline:
         # Create model
         model = YOLO('yolov8n.pt')
         
+        # Print training parameters
+        print(f"\n=== TRAINING PARAMETERS ===")
+        print(f"Epochs: {epochs}")
+        print(f"Learning Rate (lr0): {lr0:.6f}")
+        print(f"Learning Rate Final (lrf): {lrf:.6f}")
+        print(f"Image Size: {int(os.getenv('IMAGE_SIZE', '640'))}")
+        print(f"Batch Size: {int(os.getenv('BATCH_SIZE', '32'))}")
+        print(f"Workers: {int(os.getenv('WORKERS', '8'))}")
+        print(f"Classes: {self.classes}")
+        print(f"Data: {os.path.join(self.yolo_train_folder, 'dataset.yaml')}")
+        print("=" * 30)
+        
         # Train model
         results = model.train(
             data=os.path.join(self.yolo_train_folder, 'dataset.yaml'),
