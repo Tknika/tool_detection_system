@@ -34,6 +34,7 @@ load_dotenv(override=True)
 
 # Print environment variables at startup
 print("\n=== ENVIRONMENT VARIABLES ===")
+print(f"MODEL_NAME: {os.getenv('MODEL_NAME', 'NOT_SET')}")
 print(f"IMAGE_SIZE: {os.getenv('IMAGE_SIZE', 'NOT_SET')}")
 print(f"BATCH_SIZE: {os.getenv('BATCH_SIZE', 'NOT_SET')}")
 print(f"WORKERS: {os.getenv('WORKERS', 'NOT_SET')}")

@@ -23,9 +23,9 @@ N_TRIALS=20
 
 # Model parameters
 MODEL_NAME=yolov8s.pt
-WORKERS=16
+WORKERS=8
 IMAGE_SIZE=1024
-BATCH_SIZE=128
+BATCH_SIZE=64
 
 # Classes to train
 CLASSES=Cat,Dog
