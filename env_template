@@ -23,7 +23,7 @@ N_TRIALS=20
 
 # Model parameters
 WORKERS=8
-IMAGE_SIZE=640
+IMAGE_SIZE=1024
 BATCH_SIZE=32
 
 # Classes to train
