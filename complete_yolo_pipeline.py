@@ -247,10 +247,12 @@ class YOLOPipeline:
         lrf = trial.suggest_float('lrf', 0.01, 0.5)
         
         # Create model
-        model = YOLO('yolov8n.pt')
+        model_name = os.getenv('MODEL_NAME', 'yolov8n.pt')
+        model = YOLO(model_name)
         
         # Print training parameters
         print(f"\n=== TRAINING PARAMETERS ===")
+        print(f"Model: {model_name}")
         print(f"Epochs: {epochs}")
         print(f"Learning Rate (lr0): {lr0:.6f}")
         print(f"Learning Rate Final (lrf): {lrf:.6f}")
