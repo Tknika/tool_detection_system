@@ -23,6 +23,13 @@ from typing import List, Dict, Any
 import shutil
 
 # Load environment variables first
+print(f"Current working directory: {os.getcwd()}")
+print(f".env file exists: {os.path.exists('.env')}")
+if os.path.exists('.env'):
+    print("Contents of .env:")
+    with open('.env', 'r') as f:
+        print(f.read())
+
 load_dotenv(override=True)
 
 # Print environment variables at startup

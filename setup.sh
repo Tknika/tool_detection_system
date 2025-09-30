@@ -51,17 +51,10 @@ else
     if [ -f "env_template" ]; then
         echo "Using env_template to create .env"
         cp env_template .env
+        echo "Created .env from env_template"
     else
-        echo "Creating default .env file..."
-        cat > .env << EOF
-# YOLO Pipeline Environment Variables
-DATA_FOLDER=data
-TRAIN_DATASET_NAME=train_1500
-VAL_DATASET_NAME=val_1500
-TEST_DATASET_NAME=test_1500
-YOLO_TRAIN_FOLDER=data/yolo/train
-YOLO_BEST_MODEL_PATH=yolo/runs/optuna/best_model.pt
-EOF
+        echo "No env_template found. Please ensure env_template exists."
+        exit 1
     fi
 fi
 
