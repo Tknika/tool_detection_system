@@ -45,18 +45,11 @@ uv pip install -r requirements.txt
 
 # Create .env file from template
 echo "Creating .env file..."
-if [ -f ".env" ]; then
-    echo "Existing .env file found, keeping it"
-else
-    if [ -f "env_template" ]; then
-        echo "Using env_template to create .env"
-        cp env_template .env
-        echo "Created .env from env_template"
-    else
-        echo "No env_template found. Please ensure env_template exists."
-        exit 1
-    fi
-fi
+rm -f .env
+cp env_template .env
+echo "Created .env from env_template"
+echo "Verifying .env contents:"
+cat .env
 
 # Create activation script
 echo "Creating activation script..."
