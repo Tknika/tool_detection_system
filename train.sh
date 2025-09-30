@@ -25,15 +25,22 @@ fi
 echo "GPU check passed!"
 
 # Check if .env file exists
+echo "Checking for .env file..."
 if [ ! -f ".env" ]; then
     echo "Creating .env file from template..."
     if [ -f "env_template" ]; then
         cp env_template .env
         echo "Created .env from env_template"
+        echo "Contents of .env:"
+        cat .env
     else
         echo "No env_template found. Please run setup.sh first"
         exit 1
     fi
+else
+    echo ".env file already exists"
+    echo "Contents of .env:"
+    cat .env
 fi
 
 # Run the pipeline
