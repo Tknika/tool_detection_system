@@ -20,6 +20,7 @@ from dotenv import load_dotenv
 import argparse
 import logging
 from typing import List, Dict, Any
+import shutil
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -269,7 +270,6 @@ class YOLOPipeline:
             best_model_path = f"yolo/runs/optuna/trial_{best_trial.number}/weights/best.pt"
             
             # Copy best model to standard location
-            import shutil
             os.makedirs(os.path.dirname(self.yolo_best_model_path), exist_ok=True)
             if os.path.exists(best_model_path):
                 shutil.copy2(best_model_path, self.yolo_best_model_path)
