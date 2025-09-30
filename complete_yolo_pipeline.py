@@ -22,6 +22,9 @@ import logging
 from typing import List, Dict, Any
 import shutil
 
+# Load environment variables first
+load_dotenv(override=True)
+
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -61,11 +64,8 @@ class YOLOPipeline:
         
     def load_environment(self):
         """Load environment variables from .env file"""
-        try:
-            load_dotenv(override=True)
-            logger.info("Environment variables loaded successfully")
-        except Exception as e:
-            logger.warning(f"Could not load .env file: {e}")
+        # Environment variables are already loaded at module level
+        logger.info("Environment variables loaded successfully")
     
     def clean_existing_datasets(self):
         """Clean existing datasets to avoid conflicts"""
