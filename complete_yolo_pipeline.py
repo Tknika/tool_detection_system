@@ -27,7 +27,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 class YOLOPipeline:
-    def __init__(self, data_folder: str = "data", num_train: int = 1500, num_val: int = 150, num_test: int = 150):
+    def __init__(self, data_folder: str = None, num_train: int = None, num_val: int = None, num_test: int = None):
         """
         Initialize the YOLO pipeline
         
@@ -37,22 +37,24 @@ class YOLOPipeline:
             num_val: Number of validation samples  
             num_test: Number of test samples
         """
-        self.data_folder = data_folder
-        self.num_train = num_train
-        self.num_val = num_val
-        self.num_test = num_test
+        # Load from environment or use defaults
+        self.data_folder = data_folder or os.getenv("DATA_FOLDER", "data")
+        self.num_train = num_train or int(os.getenv("NUM_TRAIN", "5000"))
+        self.num_val = num_val or int(os.getenv("NUM_VAL", "500"))
+        self.num_test = num_test or int(os.getenv("NUM_TEST", "500"))
         
         # Dataset names
-        self.train_dataset_name = "train_1500"
-        self.val_dataset_name = "val_1500" 
-        self.test_dataset_name = "test_1500"
+        self.train_dataset_name = os.getenv("TRAIN_DATASET_NAME", f"train_{self.num_train}")
+        self.val_dataset_name = os.getenv("VAL_DATASET_NAME", f"val_{self.num_val}")
+        self.test_dataset_name = os.getenv("TEST_DATASET_NAME", f"test_{self.num_test}")
         
         # YOLO paths
         self.yolo_train_folder = "data/yolo/train"
         self.yolo_best_model_path = "yolo/runs/optuna/best_model.pt"
         
         # Classes
-        self.classes = ["Cat", "Dog"]
+        classes_str = os.getenv("CLASSES", "Cat,Dog")
+        self.classes = [cls.strip() for cls in classes_str.split(",")]
         
         # Configure FiftyOne
         fo.config.dataset_zoo_dir = self.data_folder
@@ -219,8 +221,10 @@ class YOLOPipeline:
         Returns:
             mAP50-95 score to maximize
         """
-        # Suggest hyperparameters
-        epochs = trial.suggest_int('epochs', 50, 150)
+        # Suggest hyperparameters from env or defaults
+        epochs_min = int(os.getenv("EPOCHS_MIN", "50"))
+        epochs_max = int(os.getenv("EPOCHS_MAX", "150"))
+        epochs = trial.suggest_int('epochs', epochs_min, epochs_max)
         lr0 = trial.suggest_float('lr0', 1e-4, 1e-2, log=True)
         lrf = trial.suggest_float('lrf', 0.01, 0.5)
         
@@ -231,11 +235,13 @@ class YOLOPipeline:
         results = model.train(
             data=os.path.join(self.yolo_train_folder, 'dataset.yaml'),
             epochs=epochs,
-            imgsz=640,
+            imgsz=int(os.getenv("IMAGE_SIZE", "640")),
+            batch=int(os.getenv("BATCH_SIZE", "32")),
+            workers=int(os.getenv("WORKERS", "8")),
             project='yolo/runs/optuna',
             lr0=lr0,
             lrf=lrf,
-            name=f'trial_{trial.number}',
+            name=f'epochs_{epochs}_lr0_{lr0:.6f}_lrf_{lrf:.6f}',
             verbose=False,
             plots=True,  # Enable plotting for TensorBoard
             save=True,   # Save checkpoints
@@ -244,14 +250,16 @@ class YOLOPipeline:
         # Return the metric to optimize (mAP50-95)
         return results.results_dict['metrics/mAP50-95(B)']
     
-    def run_optuna_optimization(self, n_trials: int = 20):
+    def run_optuna_optimization(self, n_trials: int = None):
         """
         Run Optuna hyperparameter optimization
         
         Args:
             n_trials: Number of trials to run
         """
+        n_trials = n_trials or int(os.getenv("N_TRIALS", "20"))
         logger.info(f"Starting Optuna optimization with {n_trials} trials...")
+        logger.info("Press Ctrl+C to stop optimization gracefully...")
         
         try:
             # Create study
@@ -267,7 +275,7 @@ class YOLOPipeline:
             
             # Save best model path
             best_trial = study.best_trial
-            best_model_path = f"yolo/runs/optuna/trial_{best_trial.number}/weights/best.pt"
+            best_model_path = f"yolo/runs/optuna/epochs_{best_trial.params['epochs']}_lr0_{best_trial.params['lr0']:.6f}_lrf_{best_trial.params['lrf']:.6f}/weights/best.pt"
             
             # Copy best model to standard location
             os.makedirs(os.path.dirname(self.yolo_best_model_path), exist_ok=True)
@@ -276,6 +284,15 @@ class YOLOPipeline:
                 logger.info(f"Best model saved to: {self.yolo_best_model_path}")
             
             return study
+            
+        except KeyboardInterrupt:
+            logger.info("\n\nOptimization interrupted by user (Ctrl+C)")
+            if hasattr(self, 'study') and self.study:
+                logger.info(f"Completed trials: {len(self.study.trials)}")
+                if self.study.best_trial:
+                    logger.info(f"Best parameters so far: {self.study.best_params}")
+                    logger.info(f"Best mAP50-95 so far: {self.study.best_value:.4f}")
+            return None
             
         except Exception as e:
             logger.error(f"Error during Optuna optimization: {e}")

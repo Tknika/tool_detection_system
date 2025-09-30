@@ -26,21 +26,19 @@ echo "GPU check passed!"
 
 # Check if .env file exists
 if [ ! -f ".env" ]; then
-    echo "Creating .env file..."
-    cat > .env << EOF
-# YOLO Pipeline Environment Variables
-DATA_FOLDER=data
-TRAIN_DATASET_NAME=train_1500
-VAL_DATASET_NAME=val_1500
-TEST_DATASET_NAME=test_1500
-YOLO_TRAIN_FOLDER=data/yolo/train
-YOLO_BEST_MODEL_PATH=yolo/runs/optuna/best_model.pt
-EOF
+    echo "Creating .env file from template..."
+    if [ -f "env_template" ]; then
+        cp env_template .env
+        echo "Created .env from env_template"
+    else
+        echo "No env_template found. Please run setup.sh first"
+        exit 1
+    fi
 fi
 
 # Run the pipeline
 echo "Starting YOLO pipeline training..."
-python complete_yolo_pipeline.py --n-trials 20 &
+python complete_yolo_pipeline.py &
 
 # Kill existing TensorBoard if running
 echo "Checking for existing TensorBoard..."

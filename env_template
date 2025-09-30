@@ -1,0 +1,30 @@
+# YOLO Pipeline Environment Variables
+# Copy this file to .env and modify the values as needed
+
+# Data folder for FiftyOne datasets
+DATA_FOLDER=data
+
+# Dataset names
+TRAIN_DATASET_NAME=train_5000
+VAL_DATASET_NAME=val_500
+TEST_DATASET_NAME=test_500
+
+# YOLO training folder path
+YOLO_TRAIN_FOLDER=data/yolo/train
+
+# Best model path
+YOLO_BEST_MODEL_PATH=yolo/runs/optuna/best_model.pt
+
+# Training parameters
+NUM_TRAIN=1500
+NUM_VAL=150
+NUM_TEST=150
+N_TRIALS=20
+
+# Model parameters
+WORKERS=8
+IMAGE_SIZE=640
+BATCH_SIZE=32
+
+# Classes to train
+CLASSES=Cat,Dog
