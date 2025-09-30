@@ -15,6 +15,18 @@ if [ ! -d ".venv" ]; then
     fi
 fi
 
+# Check if .env file exists
+if [ ! -f ".env" ]; then
+    echo ".env file not found. Creating from template..."
+    if [ -f "env_template" ]; then
+        cp env_template .env
+        echo "Created .env from template"
+    else
+        echo "No env_template found. Please run setup.sh first"
+        exit 1
+    fi
+fi
+
 # Activate virtual environment
 echo "Activating virtual environment..."
 source .venv/bin/activate

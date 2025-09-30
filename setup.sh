@@ -91,9 +91,17 @@ fi
 echo "Installing other requirements..."
 pip install -r requirements.txt
 
-# Create .env file
+# Create .env file from template
 echo "Creating .env file..."
-cat > .env << EOF
+if [ -f ".env" ]; then
+    echo "Existing .env file found, keeping it"
+else
+    if [ -f "env_template" ]; then
+        echo "Using env_template to create .env"
+        cp env_template .env
+    else
+        echo "Creating default .env file..."
+        cat > .env << EOF
 # YOLO Pipeline Environment Variables
 DATA_FOLDER=data
 TRAIN_DATASET_NAME=train_1500
@@ -102,6 +110,8 @@ TEST_DATASET_NAME=test_1500
 YOLO_TRAIN_FOLDER=data/yolo/train
 YOLO_BEST_MODEL_PATH=yolo/runs/optuna/best_model.pt
 EOF
+    fi
+fi
 
 # Create activation script
 echo "Creating activation script..."

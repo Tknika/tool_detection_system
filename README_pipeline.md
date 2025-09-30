@@ -19,6 +19,7 @@ chmod +x setup.sh run.sh run_tmux.sh
 - **`run.sh`** - Simple runner script
 - **`run_tmux.sh`** - Background processing with tmux sessions
 - **`complete_yolo_pipeline.py`** - Main pipeline script
+- **`env_template`** - Template for .env file (copied to .env if not exists)
 
 ## Usage
 
