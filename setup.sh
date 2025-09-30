@@ -11,39 +11,6 @@ if [ "$EUID" -eq 0 ]; then
     echo "Warning: Running as root. Consider using a regular user account."
 fi
 
-# Update system packages
-echo "Updating system packages..."
-sudo apt update
-sudo apt upgrade -y
-
-# Install system dependencies
-echo "Installing system dependencies..."
-sudo apt install -y \
-    python3 \
-    python3-pip \
-    python3-venv \
-    python3-dev \
-    build-essential \
-    cmake \
-    pkg-config \
-    libjpeg-dev \
-    libtiff5-dev \
-    libpng-dev \
-    libavcodec-dev \
-    libavformat-dev \
-    libswscale-dev \
-    libv4l-dev \
-    libxvidcore-dev \
-    libx264-dev \
-    libgtk-3-dev \
-    libatlas-base-dev \
-    gfortran \
-    wget \
-    curl \
-    git \
-    unzip \
-    htop \
-    tmux
 
 # Check Python version
 python_version=$(python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
