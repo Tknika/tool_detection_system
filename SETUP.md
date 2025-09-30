@@ -51,8 +51,14 @@ chmod +x setup.sh run.sh run_tmux.sh
 ## Manual Usage
 
 ```bash
+# Create virtual environment with uv
+uv venv --python 3.10
+
 # Activate environment
 source activate_env.sh
+
+# Install requirements
+uv pip install -r requirements.txt
 
 # Run pipeline
 python complete_yolo_pipeline.py --n-trials 20
@@ -64,7 +70,7 @@ tensorboard --logdir yolo/runs/optuna/
 ## System Requirements
 
 - Linux (Ubuntu 22.04+ recommended)
-- Python 3.8+
+- Python 3.10+
 - CUDA 11.8+ (for GPU acceleration)
 - 8GB+ RAM
 - 20GB+ free disk space

@@ -36,7 +36,7 @@ echo "Checking requirements..."
 python -c "import ultralytics, optuna, fiftyone" 2>/dev/null
 if [ $? -ne 0 ]; then
     echo "Installing requirements..."
-    pip install -r requirements.txt
+    uv pip install -r requirements.txt
 fi
 
 # Run the pipeline

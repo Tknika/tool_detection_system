@@ -14,10 +14,10 @@ fi
 
 # Check Python version
 python_version=$(python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
-required_version="3.8"
+required_version="3.10"
 
 if [ "$(printf '%s\n' "$required_version" "$python_version" | sort -V | head -n1)" != "$required_version" ]; then
-    echo "Error: Python 3.8 or higher is required"
+    echo "Error: Python 3.10 or higher is required"
     echo "Current version: $python_version"
     exit 1
 fi
@@ -30,33 +30,38 @@ mkdir -p data/yolo/{train,val,test}/{images,labels}
 mkdir -p yolo/runs/optuna
 mkdir -p logs models
 
-# Create virtual environment
-echo "Creating virtual environment..."
+# Create virtual environment with uv
+echo "Creating virtual environment with uv..."
 if [ -d ".venv" ]; then
-    echo "Virtual environment already exists, removing old one..."
-    rm -rf .venv
+    echo "Virtual environment already exists, checking if packages are installed..."
+    source .venv/bin/activate
+    # Check if main packages are installed
+    python -c "import ultralytics, optuna, fiftyone" 2>/dev/null
+    if [ $? -eq 0 ]; then
+        echo "Packages already installed, skipping virtual environment creation"
+    else
+        echo "Packages not found, reinstalling..."
+        uv pip install -r requirements.txt
+    fi
+else
+    echo "Creating new virtual environment with uv..."
+    uv venv --python 3.10
+    source .venv/bin/activate
 fi
-
-python3 -m venv .venv
-source .venv/bin/activate
-
-# Upgrade pip
-echo "Upgrading pip..."
-pip install --upgrade pip setuptools wheel
 
 # Install PyTorch with CUDA support (if CUDA is available)
 echo "Installing PyTorch..."
 if command -v nvidia-smi &> /dev/null; then
     echo "CUDA detected, installing PyTorch with CUDA support..."
-    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+    uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 else
     echo "No CUDA detected, installing CPU-only PyTorch..."
-    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+    uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 fi
 
 # Install other requirements
 echo "Installing other requirements..."
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 
 # Create .env file from template
 echo "Creating .env file..."

@@ -61,7 +61,7 @@ tensorboard --logdir yolo/runs/optuna/
 
 ## Requirements
 
-- Python 3.8+
+- Python 3.10+
 - CUDA GPU (recommended)
 - 8GB+ RAM
 - 10GB+ disk space
