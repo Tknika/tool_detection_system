@@ -32,6 +32,13 @@ fi
 echo "Starting YOLO pipeline training..."
 python complete_yolo_pipeline.py --n-trials 20 &
 
+# Kill existing TensorBoard if running
+echo "Checking for existing TensorBoard..."
+if lsof -Pi :6006 -sTCP:LISTEN -t >/dev/null ; then
+    echo "Killing existing TensorBoard on port 6006..."
+    kill -9 $(lsof -Pi :6006 -sTCP:LISTEN -t)
+fi
+
 # Start TensorBoard in background
 echo "Starting TensorBoard..."
 tensorboard --logdir yolo/runs/optuna/ --host 0.0.0.0 --port 6006 &
