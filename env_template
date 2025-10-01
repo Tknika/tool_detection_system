@@ -27,5 +27,27 @@ WORKERS=8
 IMAGE_SIZE=1024
 BATCH_SIZE=16
 
+# augmentation
+DEGREES=10.0,        # rotación moderada
+TRANSLATE=0.1,       # traslación ligera
+SCALE=0.5,           # zoom 0.5x-1.5x
+SHEAR=2.0,           # shear mínimo
+PERSPECTIVE=0.0001,  # perspectiva ligera
+FLIPUD=0.0,          # solo si objetos pueden estar invertidos
+FLIPLR=0.5,          # flip horizontal por defecto
+
+# Color
+HSV_H=0.015,         # por defecto
+HSV_S=0.7,           # por defecto
+HSV_V=0.4,           # por defecto
+
+# Mixing (IMPORTANTE para datasets pequeños)
+MOSAIC=1.0,          # activo
+MIXUP=0.15,          # añade mixup
+CLOSE_MOSAIC=10,     # desactiva mosaic últimas 10 épocas
+
+
+
+
 # Classes to train
 CLASSES=Cat,Dog

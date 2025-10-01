@@ -44,6 +44,25 @@ class YOLOTrainer:
         self.epochs_max = int(os.getenv("EPOCHS_MAX", "150"))
         self.n_trials = int(os.getenv("N_TRIALS", "20"))
         
+        # Augmentation parameters - Geometric
+        self.degrees = float(os.getenv('DEGREES', '0.0'))
+        self.translate = float(os.getenv('TRANSLATE', '0.1'))
+        self.scale = float(os.getenv('SCALE', '0.5'))
+        self.shear = float(os.getenv('SHEAR', '0.0'))
+        self.perspective = float(os.getenv('PERSPECTIVE', '0.0'))
+        self.flipud = float(os.getenv('FLIPUD', '0.0'))
+        self.fliplr = float(os.getenv('FLIPLR', '0.5'))
+        
+        # Augmentation parameters - Color
+        self.hsv_h = float(os.getenv('HSV_H', '0.015'))
+        self.hsv_s = float(os.getenv('HSV_S', '0.7'))
+        self.hsv_v = float(os.getenv('HSV_V', '0.4'))
+        
+        # Augmentation parameters - Mixing
+        self.mosaic = float(os.getenv('MOSAIC', '1.0'))
+        self.mixup = float(os.getenv('MIXUP', '0.0'))
+        self.close_mosaic = int(os.getenv('CLOSE_MOSAIC', '10'))
+        
         # TensorBoard process
         self.tensorboard_process = None
         
@@ -138,6 +157,22 @@ class YOLOTrainer:
             verbose=False,
             plots=True,
             save=True,
+            # Augmentation - Geometric
+            degrees=self.degrees,
+            translate=self.translate,
+            scale=self.scale,
+            shear=self.shear,
+            perspective=self.perspective,
+            flipud=self.flipud,
+            fliplr=self.fliplr,
+            # Augmentation - Color
+            hsv_h=self.hsv_h,
+            hsv_s=self.hsv_s,
+            hsv_v=self.hsv_v,
+            # Augmentation - Mixing
+            mosaic=self.mosaic,
+            mixup=self.mixup,
+            close_mosaic=self.close_mosaic,
         )
         
         return results.results_dict['metrics/mAP50-95(B)']
