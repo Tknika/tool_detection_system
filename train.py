@@ -4,6 +4,8 @@ Training Script for YOLO Pipeline
 Handles GPU check, environment setup, and training with Optuna
 for background training
 nohup python train.py > train_results.txt 2>&1 & 
+or
+nohup python train.py &
 """
 
 import os
