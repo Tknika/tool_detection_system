@@ -21,12 +21,20 @@ NUM_VAL=150
 NUM_TEST=150
 N_TRIALS=20
 
+# Optuna optimization ranges
+EPOCHS_MIN=50
+EPOCHS_MAX=150
+LR0_MIN=0.0001
+LR0_MAX=0.01
+LRF_MIN=0.01
+LRF_MAX=0.5
+
 # Model parameters
 MODEL_NAME=yolov8s.pt
+
 WORKERS=8
 IMAGE_SIZE=1024
 BATCH_SIZE=16
-
 # augmentation
 DEGREES=10.0,        # rotación moderada
 TRANSLATE=0.1,       # traslación ligera

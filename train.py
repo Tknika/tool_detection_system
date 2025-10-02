@@ -46,6 +46,12 @@ class YOLOTrainer:
         self.epochs_max = int(os.getenv("EPOCHS_MAX", "150"))
         self.n_trials = int(os.getenv("N_TRIALS", "20"))
         
+        # Optuna optimization ranges
+        self.lr0_min = float(os.getenv("LR0_MIN", "0.0001"))
+        self.lr0_max = float(os.getenv("LR0_MAX", "0.01"))
+        self.lrf_min = float(os.getenv("LRF_MIN", "0.01"))
+        self.lrf_max = float(os.getenv("LRF_MAX", "0.5"))
+        
         # Augmentation parameters - Geometric
         self.degrees = float(os.getenv('DEGREES', '0.0'))
         self.translate = float(os.getenv('TRANSLATE', '0.1'))
@@ -129,8 +135,8 @@ class YOLOTrainer:
     def objective(self, trial):
         """Optuna objective function"""
         epochs = trial.suggest_int('epochs', self.epochs_min, self.epochs_max)
-        lr0 = trial.suggest_float('lr0', 1e-4, 1e-2, log=True)
-        lrf = trial.suggest_float('lrf', 0.01, 0.5)
+        lr0 = trial.suggest_float('lr0', self.lr0_min, self.lr0_max, log=True)
+        lrf = trial.suggest_float('lrf', self.lrf_min, self.lrf_max)
         
         print(f"\n=== TRAINING PARAMETERS ===")
         print(f"Model: {self.model_name}")
