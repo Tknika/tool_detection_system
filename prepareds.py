@@ -188,19 +188,18 @@ class DatasetPreparer:
         print("\n=== IMAGE COUNT VERIFICATION ===")
         
         folders = {
-            "Train": self.yolo_train_folder,
-            "Validation": self.yolo_val_folder, 
-            "Test": self.yolo_test_folder
+            "Train": os.path.join(self.yolo_train_folder, "images", "train"),
+            "Validation": os.path.join(self.yolo_val_folder, "images", "val"), 
+            "Test": os.path.join(self.yolo_test_folder, "images", "test")
         }
         
         for split_name, folder_path in folders.items():
-            images_folder = os.path.join(folder_path, "images")
-            if os.path.exists(images_folder):
-                image_files = [f for f in os.listdir(images_folder) 
+            if os.path.exists(folder_path):
+                image_files = [f for f in os.listdir(folder_path) 
                              if f.lower().endswith(('.jpg', '.jpeg', '.png', '.bmp', '.tiff'))]
-                print(f"{split_name}: {len(image_files)} images in {images_folder}")
+                print(f"{split_name}: {len(image_files)} images in {folder_path}")
             else:
-                print(f"{split_name}: Folder not found - {images_folder}")
+                print(f"{split_name}: Folder not found - {folder_path}")
         
         print("=" * 35)
 
