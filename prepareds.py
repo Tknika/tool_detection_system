@@ -183,6 +183,27 @@ class DatasetPreparer:
         for key, value in dataset_config.items():
             print(f"  {key}: {value}")
     
+    def count_images_in_folders(self):
+        """Count and print the number of images in each YOLO folder"""
+        print("\n=== IMAGE COUNT VERIFICATION ===")
+        
+        folders = {
+            "Train": self.yolo_train_folder,
+            "Validation": self.yolo_val_folder, 
+            "Test": self.yolo_test_folder
+        }
+        
+        for split_name, folder_path in folders.items():
+            images_folder = os.path.join(folder_path, "images")
+            if os.path.exists(images_folder):
+                image_files = [f for f in os.listdir(images_folder) 
+                             if f.lower().endswith(('.jpg', '.jpeg', '.png', '.bmp', '.tiff'))]
+                print(f"{split_name}: {len(image_files)} images in {images_folder}")
+            else:
+                print(f"{split_name}: Folder not found - {images_folder}")
+        
+        print("=" * 35)
+
     def run_preparation(self):
         """Main preparation function"""
         print("YOLO Dataset Preparation")
@@ -200,6 +221,9 @@ class DatasetPreparer:
             
             # Step 4: Generate dataset.yaml
             self.generate_dataset_yaml()
+            
+            # Step 5: Count and verify images in folders
+            self.count_images_in_folders()
             
             print("\nDataset preparation completed successfully!")
             print(f"Dataset ready for training in: {self.yolo_train_folder}")

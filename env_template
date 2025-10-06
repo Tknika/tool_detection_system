@@ -30,7 +30,7 @@ LRF_MIN=0.01
 LRF_MAX=0.5
 
 # Model parameters
-MODEL_NAME=yolov8s.pt
+# 
 
 WORKERS=8
 IMAGE_SIZE=1024
