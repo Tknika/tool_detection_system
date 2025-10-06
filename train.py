@@ -137,19 +137,18 @@ class YOLOTrainer:
         print("\n=== IMAGE COUNT VERIFICATION ===")
         
         folders = {
-            "Train": self.yolo_train_folder,
-            "Validation": "data/yolo/val", 
-            "Test": "data/yolo/test"
+            "Train": os.getenv("YOLO_TRAIN_IMAGES", "data/yolo/train/images/train"),
+            "Validation": os.getenv("YOLO_VAL_IMAGES", "data/yolo/val/images/val"), 
+            "Test": os.getenv("YOLO_TEST_IMAGES", "data/yolo/test/images/test")
         }
         
         for split_name, folder_path in folders.items():
-            images_folder = os.path.join(folder_path, "images")
-            if os.path.exists(images_folder):
-                image_files = [f for f in os.listdir(images_folder) 
+            if os.path.exists(folder_path):
+                image_files = [f for f in os.listdir(folder_path) 
                              if f.lower().endswith(('.jpg', '.jpeg', '.png', '.bmp', '.tiff'))]
-                print(f"{split_name}: {len(image_files)} images in {images_folder}")
+                print(f"{split_name}: {len(image_files)} images in {folder_path}")
             else:
-                print(f"{split_name}: Folder not found - {images_folder}")
+                print(f"{split_name}: Folder not found - {folder_path}")
         
         print("=" * 35)
     

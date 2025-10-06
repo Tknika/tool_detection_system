@@ -12,6 +12,11 @@ TEST_DATASET_NAME=test_500
 # YOLO training folder path
 YOLO_TRAIN_FOLDER=data/yolo/train
 
+# YOLO image folders
+YOLO_TRAIN_IMAGES=data/yolo/train/images/train
+YOLO_VAL_IMAGES=data/yolo/val/images/val
+YOLO_TEST_IMAGES=data/yolo/test/images/test
+
 # Best model path
 YOLO_BEST_MODEL_PATH=yolo/runs/optuna/best_model.pt
 
