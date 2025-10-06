@@ -132,6 +132,27 @@ class YOLOTrainer:
             self.tensorboard_process.terminate()
             self.tensorboard_process.wait()
     
+    def count_images_in_folders(self):
+        """Count and print the number of images in each YOLO folder"""
+        print("\n=== IMAGE COUNT VERIFICATION ===")
+        
+        folders = {
+            "Train": self.yolo_train_folder,
+            "Validation": "data/yolo/val", 
+            "Test": "data/yolo/test"
+        }
+        
+        for split_name, folder_path in folders.items():
+            images_folder = os.path.join(folder_path, "images")
+            if os.path.exists(images_folder):
+                image_files = [f for f in os.listdir(images_folder) 
+                             if f.lower().endswith(('.jpg', '.jpeg', '.png', '.bmp', '.tiff'))]
+                print(f"{split_name}: {len(image_files)} images in {images_folder}")
+            else:
+                print(f"{split_name}: Folder not found - {images_folder}")
+        
+        print("=" * 35)
+    
     def objective(self, trial):
         """Optuna objective function"""
         epochs = trial.suggest_int('epochs', self.epochs_min, self.epochs_max)
@@ -148,6 +169,10 @@ class YOLOTrainer:
         print(f"Workers: {self.workers}")
         print(f"Classes: {self.classes}")
         print(f"Data: {os.path.join(self.yolo_train_folder, 'dataset.yaml')}")
+        
+        # Count images in each folder
+        self.count_images_in_folders()
+        
         print("=" * 30)
         
         model = YOLO(self.model_name)
