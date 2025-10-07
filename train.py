@@ -206,7 +206,7 @@ class YOLOTrainer:
             project='yolo/runs/optuna',
             lr0=lr0,
             lrf=lrf,
-            name=f'trial_{trial.number}_lr0_{lr0:.6f}_lrf_{lrf:.6f}',
+            name=f'trial_{trial.number}_lr0_{lr0:.6f}_lrf_{lrf:.6f}_deg_{degrees:.1f}_tr_{translate:.2f}_sc_{scale:.2f}_sh_{shear:.1f}_hsvs_{hsv_s:.2f}_hsvv_{hsv_v:.2f}_mix_{mixup:.2f}',
             verbose=False,
             plots=True,
             save=True,
@@ -247,7 +247,8 @@ class YOLOTrainer:
             
             # Save best model
             best_trial = study.best_trial
-            best_model_path = f"yolo/runs/optuna/trial_{best_trial.number}_lr0_{best_trial.params['lr0']:.6f}_lrf_{best_trial.params['lrf']:.6f}/weights/best.pt"
+            bp = best_trial.params
+            best_model_path = f"yolo/runs/optuna/trial_{best_trial.number}_lr0_{bp['lr0']:.6f}_lrf_{bp['lrf']:.6f}_deg_{bp['degrees']:.1f}_tr_{bp['translate']:.2f}_sc_{bp['scale']:.2f}_sh_{bp['shear']:.1f}_hsvs_{bp['hsv_s']:.2f}_hsvv_{bp['hsv_v']:.2f}_mix_{bp['mixup']:.2f}/weights/best.pt"
             
             if os.path.exists(best_model_path):
                 import shutil
