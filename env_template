@@ -26,9 +26,10 @@ NUM_VAL=150
 NUM_TEST=150
 N_TRIALS=20
 
-# Optuna optimization ranges
-EPOCHS_MIN=50
-EPOCHS_MAX=150
+# Training parameters
+EPOCHS=100           # número fijo de épocas por trial
+
+# Optuna optimization ranges (solo lr0 y lrf)
 LR0_MIN=0.0001
 LR0_MAX=0.01
 LRF_MIN=0.01
@@ -40,23 +41,15 @@ LRF_MAX=0.5
 WORKERS=8
 IMAGE_SIZE=1024
 BATCH_SIZE=16
-# augmentation
-DEGREES=10.0         # rotación moderada
-TRANSLATE=0.1        # traslación ligera
-SCALE=0.5            # zoom 0.5x-1.5x
-SHEAR=2.0            # shear mínimo
+
+# Augmentation parameters
+# NOTA: degrees, translate, scale, shear, hsv_s, hsv_v, mixup se optimizan con Optuna
+# Los siguientes son valores fijos que NO se optimizan:
 PERSPECTIVE=0.0001   # perspectiva ligera
 FLIPUD=0.0           # solo si objetos pueden estar invertidos
 FLIPLR=0.5           # flip horizontal por defecto
-
-# Color
-HSV_H=0.015          # por defecto
-HSV_S=0.7            # por defecto
-HSV_V=0.4            # por defecto
-
-# Mixing (IMPORTANTE para datasets pequeños)
+HSV_H=0.015          # hue (por defecto)
 MOSAIC=1.0           # activo
-MIXUP=0.15           # añade mixup
 CLOSE_MOSAIC=10      # desactiva mosaic últimas 10 épocas
 
 

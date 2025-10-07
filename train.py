@@ -42,8 +42,7 @@ class YOLOTrainer:
         self.image_size = int(os.getenv('IMAGE_SIZE', '640'))
         self.batch_size = int(os.getenv('BATCH_SIZE', '32'))
         self.workers = int(os.getenv('WORKERS', '8'))
-        self.epochs_min = int(os.getenv("EPOCHS_MIN", "50"))
-        self.epochs_max = int(os.getenv("EPOCHS_MAX", "150"))
+        self.epochs = int(os.getenv('EPOCHS', '100'))
         self.n_trials = int(os.getenv("N_TRIALS", "20"))
         
         # Optuna optimization ranges
@@ -154,13 +153,22 @@ class YOLOTrainer:
     
     def objective(self, trial):
         """Optuna objective function"""
-        epochs = trial.suggest_int('epochs', self.epochs_min, self.epochs_max)
+        # Hyperparameters optimization
         lr0 = trial.suggest_float('lr0', self.lr0_min, self.lr0_max, log=True)
         lrf = trial.suggest_float('lrf', self.lrf_min, self.lrf_max)
         
+        # Augmentation parameters optimization
+        degrees = trial.suggest_float('degrees', 0.0, 45.0)
+        translate = trial.suggest_float('translate', 0.0, 0.3)
+        scale = trial.suggest_float('scale', 0.0, 0.9)
+        shear = trial.suggest_float('shear', 0.0, 10.0)
+        hsv_s = trial.suggest_float('hsv_s', 0.0, 0.9)
+        hsv_v = trial.suggest_float('hsv_v', 0.0, 0.9)
+        mixup = trial.suggest_float('mixup', 0.0, 1.0)
+        
         print(f"\n=== TRAINING PARAMETERS ===")
         print(f"Model: {self.model_name}")
-        print(f"Epochs: {epochs}")
+        print(f"Epochs: {self.epochs}")
         print(f"Learning Rate (lr0): {lr0:.6f}")
         print(f"Learning Rate Final (lrf): {lrf:.6f}")
         print(f"Image Size: {self.image_size}")
@@ -168,6 +176,14 @@ class YOLOTrainer:
         print(f"Workers: {self.workers}")
         print(f"Classes: {self.classes}")
         print(f"Data: {os.path.join(self.yolo_train_folder, 'dataset.yaml')}")
+        print(f"\n=== AUGMENTATION PARAMETERS ===")
+        print(f"Degrees: {degrees:.2f}")
+        print(f"Translate: {translate:.3f}")
+        print(f"Scale: {scale:.3f}")
+        print(f"Shear: {shear:.2f}")
+        print(f"HSV_S: {hsv_s:.3f}")
+        print(f"HSV_V: {hsv_v:.3f}")
+        print(f"Mixup: {mixup:.3f}")
         
         # Count images in each folder
         self.count_images_in_folders()
@@ -178,32 +194,32 @@ class YOLOTrainer:
         
         results = model.train(
             data=os.path.join(self.yolo_train_folder, 'dataset.yaml'),
-            epochs=epochs,
+            epochs=self.epochs,
             imgsz=self.image_size,
             batch=self.batch_size,
             workers=self.workers,
             project='yolo/runs/optuna',
             lr0=lr0,
             lrf=lrf,
-            name=f'epochs_{epochs}_lr0_{lr0:.6f}_lrf_{lrf:.6f}',
+            name=f'trial_{trial.number}_lr0_{lr0:.6f}_lrf_{lrf:.6f}',
             verbose=False,
             plots=True,
             save=True,
             # Augmentation - Geometric
-            degrees=self.degrees,
-            translate=self.translate,
-            scale=self.scale,
-            shear=self.shear,
+            degrees=degrees,
+            translate=translate,
+            scale=scale,
+            shear=shear,
             perspective=self.perspective,
             flipud=self.flipud,
             fliplr=self.fliplr,
             # Augmentation - Color
             hsv_h=self.hsv_h,
-            hsv_s=self.hsv_s,
-            hsv_v=self.hsv_v,
+            hsv_s=hsv_s,
+            hsv_v=hsv_v,
             # Augmentation - Mixing
             mosaic=self.mosaic,
-            mixup=self.mixup,
+            mixup=mixup,
             close_mosaic=self.close_mosaic,
         )
         
@@ -226,7 +242,7 @@ class YOLOTrainer:
             
             # Save best model
             best_trial = study.best_trial
-            best_model_path = f"yolo/runs/optuna/epochs_{best_trial.params['epochs']}_lr0_{best_trial.params['lr0']:.6f}_lrf_{best_trial.params['lrf']:.6f}/weights/best.pt"
+            best_model_path = f"yolo/runs/optuna/trial_{best_trial.number}_lr0_{best_trial.params['lr0']:.6f}_lrf_{best_trial.params['lrf']:.6f}/weights/best.pt"
             
             if os.path.exists(best_model_path):
                 import shutil

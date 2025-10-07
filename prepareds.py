@@ -81,6 +81,7 @@ class DatasetPreparer:
                 classes=self.classes,
                 max_samples=self.num_train,
                 persistent=False,
+                only_matching=False,  # Include images with any of the classes
             )
             print(f"Training dataset downloaded: {len(train_dataset)} samples")
             
@@ -94,6 +95,7 @@ class DatasetPreparer:
                 classes=self.classes,
                 max_samples=self.num_val,
                 persistent=False,
+                only_matching=False,  # Include images with any of the classes
             )
             print(f"Validation dataset downloaded: {len(val_dataset)} samples")
             
@@ -107,6 +109,7 @@ class DatasetPreparer:
                 classes=self.classes,
                 max_samples=self.num_test,
                 persistent=False,
+                only_matching=False,  # Include images with any of the classes
             )
             print(f"Test dataset downloaded: {len(test_dataset)} samples")
             
