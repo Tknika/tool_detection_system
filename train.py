@@ -45,29 +45,34 @@ class YOLOTrainer:
         self.epochs = int(os.getenv('EPOCHS', '100'))
         self.n_trials = int(os.getenv("N_TRIALS", "20"))
         
-        # Optuna optimization ranges
+        # Optuna optimization ranges - Learning rates
         self.lr0_min = float(os.getenv("LR0_MIN", "0.0001"))
         self.lr0_max = float(os.getenv("LR0_MAX", "0.01"))
         self.lrf_min = float(os.getenv("LRF_MIN", "0.01"))
         self.lrf_max = float(os.getenv("LRF_MAX", "0.5"))
         
-        # Augmentation parameters - Geometric
-        self.degrees = float(os.getenv('DEGREES', '0.0'))
-        self.translate = float(os.getenv('TRANSLATE', '0.1'))
-        self.scale = float(os.getenv('SCALE', '0.5'))
-        self.shear = float(os.getenv('SHEAR', '0.0'))
+        # Optuna optimization ranges - Augmentation
+        self.degrees_min = float(os.getenv("DEGREES_MIN", "0.0"))
+        self.degrees_max = float(os.getenv("DEGREES_MAX", "45.0"))
+        self.translate_min = float(os.getenv("TRANSLATE_MIN", "0.0"))
+        self.translate_max = float(os.getenv("TRANSLATE_MAX", "0.3"))
+        self.scale_min = float(os.getenv("SCALE_MIN", "0.0"))
+        self.scale_max = float(os.getenv("SCALE_MAX", "0.9"))
+        self.shear_min = float(os.getenv("SHEAR_MIN", "0.0"))
+        self.shear_max = float(os.getenv("SHEAR_MAX", "10.0"))
+        self.hsv_s_min = float(os.getenv("HSV_S_MIN", "0.0"))
+        self.hsv_s_max = float(os.getenv("HSV_S_MAX", "0.9"))
+        self.hsv_v_min = float(os.getenv("HSV_V_MIN", "0.0"))
+        self.hsv_v_max = float(os.getenv("HSV_V_MAX", "0.9"))
+        self.mixup_min = float(os.getenv("MIXUP_MIN", "0.0"))
+        self.mixup_max = float(os.getenv("MIXUP_MAX", "1.0"))
+        
+        # Fixed augmentation parameters (no optimizados por Optuna)
         self.perspective = float(os.getenv('PERSPECTIVE', '0.0'))
         self.flipud = float(os.getenv('FLIPUD', '0.0'))
         self.fliplr = float(os.getenv('FLIPLR', '0.5'))
-        
-        # Augmentation parameters - Color
         self.hsv_h = float(os.getenv('HSV_H', '0.015'))
-        self.hsv_s = float(os.getenv('HSV_S', '0.7'))
-        self.hsv_v = float(os.getenv('HSV_V', '0.4'))
-        
-        # Augmentation parameters - Mixing
         self.mosaic = float(os.getenv('MOSAIC', '1.0'))
-        self.mixup = float(os.getenv('MIXUP', '0.0'))
         self.close_mosaic = int(os.getenv('CLOSE_MOSAIC', '10'))
         
         # TensorBoard process
@@ -158,13 +163,13 @@ class YOLOTrainer:
         lrf = trial.suggest_float('lrf', self.lrf_min, self.lrf_max)
         
         # Augmentation parameters optimization
-        degrees = trial.suggest_float('degrees', 0.0, 45.0)
-        translate = trial.suggest_float('translate', 0.0, 0.3)
-        scale = trial.suggest_float('scale', 0.0, 0.9)
-        shear = trial.suggest_float('shear', 0.0, 10.0)
-        hsv_s = trial.suggest_float('hsv_s', 0.0, 0.9)
-        hsv_v = trial.suggest_float('hsv_v', 0.0, 0.9)
-        mixup = trial.suggest_float('mixup', 0.0, 1.0)
+        degrees = trial.suggest_float('degrees', self.degrees_min, self.degrees_max)
+        translate = trial.suggest_float('translate', self.translate_min, self.translate_max)
+        scale = trial.suggest_float('scale', self.scale_min, self.scale_max)
+        shear = trial.suggest_float('shear', self.shear_min, self.shear_max)
+        hsv_s = trial.suggest_float('hsv_s', self.hsv_s_min, self.hsv_s_max)
+        hsv_v = trial.suggest_float('hsv_v', self.hsv_v_min, self.hsv_v_max)
+        mixup = trial.suggest_float('mixup', self.mixup_min, self.mixup_max)
         
         print(f"\n=== TRAINING PARAMETERS ===")
         print(f"Model: {self.model_name}")

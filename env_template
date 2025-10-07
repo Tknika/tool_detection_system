@@ -21,30 +21,48 @@ YOLO_TEST_IMAGES=data/yolo/test/images/test
 YOLO_BEST_MODEL_PATH=yolo/runs/optuna/best_model.pt
 
 # Training parameters
-NUM_TRAIN=1500
-NUM_VAL=150
-NUM_TEST=150
-N_TRIALS=20
+NUM_TRAIN=4000
+NUM_VAL=600
+NUM_TEST=600
+N_TRIALS=50
 
 # Training parameters
-EPOCHS=100           # número fijo de épocas por trial
+EPOCHS=50           # número fijo de épocas por trial
 
-# Optuna optimization ranges (solo lr0 y lrf)
+# --- Tasas de Aprendizaje ---
 LR0_MIN=0.0001
 LR0_MAX=0.01
 LRF_MIN=0.01
 LRF_MAX=0.5
 
+# --- Aumentación Geométrica ---
+DEGREES_MIN=0.0
+DEGREES_MAX=45.0
+TRANSLATE_MIN=0.0
+TRANSLATE_MAX=0.3
+SCALE_MIN=0.1
+SCALE_MAX=0.6
+SHEAR_MIN=0.0
+SHEAR_MAX=10.0
+
+# --- Aumentación de Color ---
+HSV_S_MIN=0.2
+HSV_S_MAX=0.8
+HSV_V_MIN=0.2
+HSV_V_MAX=0.7
+
+# --- Mixing ---
+MIXUP_MIN=0.0
+MIXUP_MAX=0.4
+
 # Model parameters
 # 
 
-WORKERS=8
+WORKERS=2
 IMAGE_SIZE=1024
-BATCH_SIZE=16
+BATCH_SIZE=24
 
-# Augmentation parameters
-# NOTA: degrees, translate, scale, shear, hsv_s, hsv_v, mixup se optimizan con Optuna
-# Los siguientes son valores fijos que NO se optimizan:
+
 PERSPECTIVE=0.0001   # perspectiva ligera
 FLIPUD=0.0           # solo si objetos pueden estar invertidos
 FLIPLR=0.5           # flip horizontal por defecto
