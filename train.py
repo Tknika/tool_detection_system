@@ -198,6 +198,7 @@ class YOLOTrainer:
         model = YOLO(self.model_name)
         
         results = model.train(
+            cache=False,
             data=os.path.join(self.yolo_train_folder, 'dataset.yaml'),
             epochs=self.epochs,
             imgsz=self.image_size,
