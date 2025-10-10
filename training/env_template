@@ -85,6 +85,16 @@ FINAL_IMAGE_SIZE=1024
 FINAL_BATCH_SIZE=16
 FINAL_WORKERS=4
 FINAL_DATA_FOLDER=data/yolo/train
+
+FINAL_TRAIN_FOLDER=data/yolo/train/images/train
+FINAL_VAL_FOLDER=data/yolo/val/images/val
+FINAL_TEST_FOLDER=data/yolo/test/images/test
+
+
+
+
+
+
 CLASSES=Screwdriver
 final_epochs=150
 final_lr0=0.00028651020734006625
