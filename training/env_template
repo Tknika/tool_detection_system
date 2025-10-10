@@ -75,3 +75,24 @@ CLOSE_MOSAIC=10      # desactiva mosaic últimas 10 épocas
 
 # Classes to train
 CLASSES=Cat,Dog
+
+
+
+
+#single train
+MODEL_NAME=yolov8n.pt
+FINAL_IMAGE_SIZE=1024
+FINAL_BATCH_SIZE=16
+FINAL_WORKERS=4
+FINAL_DATA_FOLDER=data/yolo/train
+CLASSES=Screwdriver
+final_epochs=150
+final_lr0=0.00028651020734006625
+final_lrf=0.07405555668235508
+final_degrees=0.005112472864190143
+final_translate=0.157644446185107
+final_scale=0.33440688584633627
+final_shear=5.225681584746484
+final_hsv_s=0.7230582567896858
+final_hsv_v=0.2234442907654164
+final_mixup=0.26118355294063333
