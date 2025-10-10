@@ -127,9 +127,9 @@ class YOLOFinalTrainer:
         print("\n=== IMAGE COUNT VERIFICATION ===")
         
         folders = {
-            "Train": os.getenv("YOLO_TRAIN_IMAGES", "data/yolo/train/images/train"),
-            "Validation": os.getenv("YOLO_VAL_IMAGES", "data/yolo/val/images/val"), 
-            "Test": os.getenv("YOLO_TEST_IMAGES", "data/yolo/test/images/test")
+            "Train": os.getenv("FINAL_TRAIN_FOLDER", "data/yolo/train/images/train"),
+            "Validation": os.getenv("FINAL_VAL_FOLDER", "data/yolo/val/images/val"), 
+            "Test": os.getenv("FINAL_TEST_FOLDER", "data/yolo/test/images/test")
         }
         
         for split_name, folder_path in folders.items():
