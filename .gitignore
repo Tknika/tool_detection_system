@@ -11,6 +11,8 @@
 *.jfif
 *.jfi
 #models
+
+*dataset*
 yolo
 yolo/runs/
 data/
