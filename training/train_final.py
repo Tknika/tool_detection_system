@@ -29,16 +29,15 @@ logger = logging.getLogger(__name__)
 
 class YOLOFinalTrainer:
     def __init__(self):
-        self.data_folder = os.getenv("DATA_FOLDER", "data")
         self.classes = [cls.strip() for cls in os.getenv("CLASSES", "Cat,Dog").split(",")]
-        self.yolo_train_folder = "data/yolo/train"
+        self.yolo_train_folder = os.getenv("FINAL_DATA_FOLDER", "data/yolo/train")
         self.yolo_final_model_path = "yolo/runs/final/weights/best.pt"
         
         # Basic training parameters
         self.model_name = os.getenv('MODEL_NAME', 'yolov8n.pt')
-        self.image_size = int(os.getenv('IMAGE_SIZE', '640'))
-        self.batch_size = int(os.getenv('BATCH_SIZE', '32'))
-        self.workers = int(os.getenv('WORKERS', '8'))
+        self.image_size = int(os.getenv('FINAL_IMAGE_SIZE', '640'))
+        self.batch_size = int(os.getenv('FINAL_BATCH_SIZE', '32'))
+        self.workers = int(os.getenv('FINAL_WORKERS', '8'))
         
         # Final optimized parameters from Optuna
         self.epochs = int(os.getenv('final_epochs', '100'))
