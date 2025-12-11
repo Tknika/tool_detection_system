@@ -29,7 +29,7 @@ runs/
 *.jpx
 *.jpm
 *.mj2
-
+ITD_*
 # JPEG XR
 *.jxr
 *.hdp
