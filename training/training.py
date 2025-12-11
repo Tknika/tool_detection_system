@@ -17,6 +17,7 @@ import subprocess
 import signal
 import shutil
 import random
+import time
 from pathlib import Path
 from dotenv import load_dotenv
 import torch
@@ -278,14 +279,39 @@ class YOLOTraining:
             print(f"Error checking for existing TensorBoard: {e}")
         
         print("Starting TensorBoard...")
-        self.tensorboard_process = subprocess.Popen([
-            'tensorboard', 
-            '--logdir', 'yolo/runs/optuna/', 
-            '--host', '0.0.0.0', 
-            '--port', '6006'
-        ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        # Create log file for TensorBoard output
+        tensorboard_log = os.path.join('yolo/runs', 'tensorboard.log')
+        os.makedirs(os.path.dirname(tensorboard_log), exist_ok=True)
         
-        print("TensorBoard available at: http://localhost:6006")
+        # Start TensorBoard with proper detaching for nohup
+        with open(tensorboard_log, 'a') as log_file:
+            self.tensorboard_process = subprocess.Popen([
+                'tensorboard', 
+                '--logdir', 'yolo/runs/optuna/', 
+                '--host', '0.0.0.0', 
+                '--port', '6006'
+            ], 
+            stdout=log_file, 
+            stderr=subprocess.STDOUT,
+            preexec_fn=os.setsid if hasattr(os, 'setsid') else None,
+            start_new_session=True)
+        
+        # Give TensorBoard a moment to start
+        time.sleep(2)
+        
+        # Verify TensorBoard is running
+        try:
+            result = subprocess.run(['lsof', '-Pi', ':6006', '-sTCP:LISTEN', '-t'], 
+                                  capture_output=True, text=True, timeout=1)
+            if result.stdout.strip():
+                print("TensorBoard started successfully!")
+                print("TensorBoard available at: http://localhost:6006")
+                print(f"TensorBoard logs: {tensorboard_log}")
+            else:
+                print("WARNING: TensorBoard may not have started. Check logs at:", tensorboard_log)
+        except Exception as e:
+            print(f"Could not verify TensorBoard status: {e}")
+            print(f"Check TensorBoard logs at: {tensorboard_log}")
     
     def stop_tensorboard(self):
         """Stop TensorBoard process"""
