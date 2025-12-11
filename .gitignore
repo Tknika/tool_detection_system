@@ -11,7 +11,7 @@
 *.jfif
 *.jfi
 #models
-
+nohup*
 *dataset*
 yolo
 yolo/runs/
