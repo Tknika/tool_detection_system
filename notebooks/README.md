@@ -1,4 +1,4 @@
-# Notebooks en Google Colab (guia basica)
+# Notebooks en Google Colab 
 
 Si, se puede incrustar un boton en GitHub para abrir cada notebook directamente en Colab.
 
@@ -10,7 +10,7 @@ Si, se puede incrustar un boton en GitHub para abrir cada notebook directamente 
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Tknika/tool_detection_system/blob/tutorial/notebooks/3_full_training.ipynb) `3_full_training.ipynb`
 
-## Como correrlos (pasos rapidos)
+## Como correrlos 
 
 1. Entra a este repo en GitHub.
 2. Ve a la carpeta `notebooks/`.
@@ -23,13 +23,3 @@ Si, se puede incrustar un boton en GitHub para abrir cada notebook directamente 
 - Los notebooks ya tienen celdas para instalar dependencias (`ultralytics`, `huggingface_hub`, etc.).
 - Si cambias rutas o nombres de archivos (por ejemplo `kortxo.jpg`), ajustalo en la celda de configuracion de inferencia.
 - Para guardar resultados de entrenamiento (weights, runs), puedes montar Google Drive y usar una ruta dentro de `/content/drive/MyDrive/...`.
-
-## Como generar un boton Open In Colab para cualquier notebook
-
-Patron del enlace:
-
-`https://colab.research.google.com/github/<owner>/<repo>/blob/<branch>/<path_al_notebook>.ipynb`
-
-Ejemplo para este repo:
-
-`https://colab.research.google.com/github/Tknika/tool_detection_system/blob/main/notebooks/3_full_training.ipynb`
