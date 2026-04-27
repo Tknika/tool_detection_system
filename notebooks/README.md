@@ -4,11 +4,11 @@ Si, se puede incrustar un boton en GitHub para abrir cada notebook directamente 
 
 ## Abrir en Colab
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Tknika/tool_detection_system/blob/tutorial/notebooks/1_simple_train.ipynb) `1_simple_train.ipynb`
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Tknika/tool_detection_system/blob/main/notebooks/1_simple_train.ipynb) `1_simple_train.ipynb`
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Tknika/tool_detection_system/blob/tutorial/notebooks/2_hp_search.ipynb) `2_hp_search.ipynb`
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Tknika/tool_detection_system/blob/main/notebooks/2_hp_search.ipynb) `2_hp_search.ipynb`
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Tknika/tool_detection_system/blob/tutorial/notebooks/3_full_training.ipynb) `3_full_training.ipynb`
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Tknika/tool_detection_system/blob/main/notebooks/3_full_training.ipynb) `3_full_training.ipynb`
 
 ## Como correrlos 
 
